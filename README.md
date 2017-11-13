@@ -1,0 +1,2 @@
+# FaedahBot
+Bot LINE berfaedah.

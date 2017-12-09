@@ -4,7 +4,7 @@ import errno
 import os
 import sys
 import tempfile
-
+import request
 from flask import Flask, request, abort
 
 from linebot import (
@@ -32,8 +32,8 @@ CHANNEL_ACCESS_TOKEN = os.getenv('CHANNEL_ACCESS_TOKEN')
 
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(CHANNEL_SECRET)
-
-
+r = requests.get('http://api.aladhan.com/timings/0?latitude=-6.121435&longitude=106.8650&method=2')
+result = r.json()
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 
 
@@ -155,6 +155,9 @@ def handle_text_message(event):
         line_bot_api.reply_message(event.reply_token, template_message)
     elif text == 'imagemap':
         pass
+    elif text == 'jadwal':
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text = result))
     else:
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text=event.message.text))
